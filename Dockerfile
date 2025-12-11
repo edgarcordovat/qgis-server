@@ -24,7 +24,7 @@ RUN apt-get install -y \
 RUN mkdir -p /data
 
 # Copiar tu proyecto QGIS
-COPY project.qgz /data/project.qgz
+COPY project.qgz /data/mi_proyecto.qgs
 
 # Copiar archivo de configuración del servidor QGIS (opcional)
 COPY server.conf /etc/qgis/server.conf
@@ -50,3 +50,4 @@ EXPOSE 8080
 # Comando para iniciar QGIS Server + NGINX en Railway
 CMD spawn-fcgi -s /tmp/qgisserver.sock -U www-data -G www-data /usr/lib/cgi-bin/qgis_mapserv.fcgi && \
     nginx -g 'daemon off;'
+

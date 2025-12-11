@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mapa QGIS Server en Railway</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+    .leaflet-control-attribution {
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <script>
+    // Centro aproximado sacado del GetCapabilities (tus coords)
+    const center = [-0.1835, -78.484]; // [lat, lon]
+
+    // Crear mapa
+    const map = L.map('map').setView(center, 15);
+
+    // Capa base OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // URL WMS (¡relativa! así funciona igual en dev y prod)
+    const wmsUrl = '/ogc/mi_proyecto';
+
+    const wmsLayer = L.tileLayer.wms(wmsUrl, {
+      layers: 'mis_datos',          // nombre de la capa en tu WMS
+      format: 'image/png',
+      transparent: true,
+      version: '1.3.0',
+      styles: 'predeterminado'      // opcional, pero lo tienes en el XML
+    });
+
+    wmsLayer.addTo(map);
+  </script>
+</body>
+</html>
